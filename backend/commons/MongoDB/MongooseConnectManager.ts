@@ -1,0 +1,43 @@
+import { injectable, inject } from "inversify";
+import { createConnection, Connection } from "mongoose";
+
+import { IOCContainer } from "@/backend/cores/IOCContainer";
+import { ApplicationConfigManager } from "@/backend/commons/Application/ApplicationConfigManager";
+
+@injectable()
+export class MongooseConnectManager {
+
+  private connection: Connection;
+
+  constructor (
+    @inject(ApplicationConfigManager) private readonly $ApplicationConfigManager: ApplicationConfigManager
+  ) { };
+
+  public async initialize() {
+    try {
+      const { mongodb } = await this.$ApplicationConfigManager.getRuntimeConfig();
+      const { host, port, username, password, database } = mongodb;
+      const connectionURL = `mongodb://${username}:${password}@${host}:${port}/${database}?authSource=admin`;
+      const connection = await createConnection(connectionURL);
+      this.connection = connection;
+      console.log("mongoose 连接成功!!!");
+    } catch (error) {
+      console.log("mongoose 连接失败!!!", error);
+    };
+  };
+
+  /** 销毁连接,用于单元测试 **/
+  public async destroy() {
+    await this.connection.destroy();
+    console.log("mongoose 连接已销毁!!!");
+  };
+
+  public async getDatabaseWithName(databaseName) {
+    // return this.connection;
+    const database = await this.connection.useDb(databaseName);
+    return database;
+  };
+
+};
+
+IOCContainer.bind(MongooseConnectManager).toSelf().inSingletonScope();

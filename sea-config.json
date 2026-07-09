@@ -1,0 +1,6 @@
+{
+  "main": "./assets/backend.js",
+  "output": "./assets/backend.bin",
+  "disableExperimentalSEAWarning": true,
+  "assets": {}
+}
