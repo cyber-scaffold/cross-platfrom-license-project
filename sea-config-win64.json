@@ -1,0 +1,6 @@
+{
+  "main": "./dist/server.js",
+  "output": "./dist/server.exe",
+  "disableExperimentalSEAWarning": true,
+  "assets": {}
+}

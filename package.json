@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "node -r esbuild-register ./frameworks/mpa-ssr-build-tool/development.ts",
     "build": "node -r esbuild-register ./frameworks/mpa-ssr-build-tool/build.ts",
-    "pack": "npm run build && node --build-sea sea-config.json"
+    "pack:linux": "npm run build && node --build-sea sea-config-linux.json",
+    "pack:win64": "npm run build && node --build-sea sea-config-win64.json"
   },
   "keywords": [],
   "author": "",
