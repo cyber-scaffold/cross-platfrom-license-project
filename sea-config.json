@@ -1,6 +1,6 @@
 {
-  "main": "./assets/backend.js",
-  "output": "./assets/backend.bin",
+  "main": "./dist/server.js",
+  "output": "./dist/server.bin",
   "disableExperimentalSEAWarning": true,
   "assets": {}
 }
