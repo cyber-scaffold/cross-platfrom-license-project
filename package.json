@@ -1,7 +1,7 @@
 {
   "name": "cross-platfrom-license-project",
   "version": "1.0.0",
-  "description": "基于electron和express商业化的多平台授权许可项目",
+  "description": "将nodejs编译为Single Executable Application的框架",
   "main": "./assets/backend.js",
   "scripts": {
     "dev": "node -r esbuild-register ./frameworks/mvc-server-build-tool/development.ts",

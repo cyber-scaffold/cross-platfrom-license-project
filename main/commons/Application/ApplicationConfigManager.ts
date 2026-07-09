@@ -3,7 +3,7 @@ import path from "path";
 import { injectable } from "inversify";
 
 import { readProjectDirectoryAbsolutePath } from "@/frameworks/mvc-server-tool-box/runtime";
-import { IOCContainer } from "@/backend/cores/IOCContainer";
+import { IOCContainer } from "@/main/cores/IOCContainer";
 
 
 @injectable()

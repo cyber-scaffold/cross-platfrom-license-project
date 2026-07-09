@@ -1,9 +1,9 @@
 import { DataSource } from "typeorm";
 import { injectable, inject } from "inversify";
 
-import { IOCContainer } from "@/backend/cores/IOCContainer";
-import { ApplicationConfigManager } from "@/backend/commons/Application/ApplicationConfigManager";
-import { logger } from "@/backend/utils/logger";
+import { IOCContainer } from "@/main/cores/IOCContainer";
+import { ApplicationConfigManager } from "@/main/commons/Application/ApplicationConfigManager";
+import { logger } from "@/main/utils/logger";
 
 /** 很多分库分表都是在应用层完成的,一般都是根据数据库名进行区分 **/
 @injectable()

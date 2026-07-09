@@ -1,8 +1,8 @@
 import { v4 as uuidv4 } from "uuid";
 import { injectable, inject } from "inversify";
 
-import { IOCContainer } from "@/backend/cores/IOCContainer";
-import { SessionInfoService } from "@/backend/services/SessionInfoService";
+import { IOCContainer } from "@/main/cores/IOCContainer";
+import { SessionInfoService } from "@/main/services/SessionInfoService";
 
 @injectable()
 export class UserMessageService {

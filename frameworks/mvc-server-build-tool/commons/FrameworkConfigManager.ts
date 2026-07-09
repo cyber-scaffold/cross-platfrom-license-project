@@ -14,7 +14,7 @@ export class FrameworkConfigManager {
   /**
    * 入口文件
    * **/
-  private entryFile = path.resolve(process.cwd(), "./backend/index.ts");
+  private entryFile = path.resolve(process.cwd(), "./main/index.ts");
 
   /**
    * 项目根目录的路径
@@ -24,7 +24,7 @@ export class FrameworkConfigManager {
   /**
    * 编译产物的目标地址的文件夹名称
    * **/
-  private assetsDirectoryName = "assets";
+  private assetsDirectoryName = "dist";
 
   /**
    * 计算后得到的编译资产输出目录
@@ -34,7 +34,7 @@ export class FrameworkConfigManager {
   /**
    * 项目中静态资源的原始目录
    * **/
-  private staticResourceDirectorySourcePath = path.resolve(this.projectDirectoryPath, "./backend/statics/");
+  private staticResourceDirectorySourcePath = path.resolve(this.projectDirectoryPath, "./main/statics/");
 
   /**
    * 项目中静态资源的目标目录
@@ -44,12 +44,12 @@ export class FrameworkConfigManager {
   /**
    * Swagger在前端初始化时使用的文件
    * **/
-  private swaggerInitializer = path.resolve(process.cwd(), "./backend/cores/swagger-initializer.js");
+  private swaggerInitializer = path.resolve(process.cwd(), "./main/cores/swagger-initializer.js");
 
   /**
    * 扫描Swagger文档时使用的glob表达式默认扫描controllers文件夹下的内容
    * **/
-  private extractSwaggerGlobExpression = path.resolve(process.cwd(), "./backend/controllers/**/*.{ts,tsx,js,jsx}");
+  private extractSwaggerGlobExpression = path.resolve(process.cwd(), "./main/controllers/**/*.{ts,tsx,js,jsx}");
 
   /**
    * Swagger静态资源的原始目录的路径

@@ -2,21 +2,21 @@ import amqp from "amqplib";
 import { red, green } from "colors";
 import { injectable, inject } from "inversify";
 
-import { IOCContainer } from "@/backend/cores/IOCContainer";
-import { ApplicationConfigManager } from "@/backend/commons/Application/ApplicationConfigManager";
-import { logger } from "@/backend/utils/logger";
+import { IOCContainer } from "@/main/cores/IOCContainer";
+import { ApplicationConfigManager } from "@/main/commons/Application/ApplicationConfigManager";
+import { logger } from "@/main/utils/logger";
 
 import type { Connection } from "amqplib";
 
-export interface IPublishOption {
+export interface IListenerOption {
   exchangeName: string;
   routerName: string;
   queueName: string;
 };
 
-/** Rabbitmq生产者的抽象基础类 **/
+/** Rabbitmq消费者者的抽象基础类 **/
 @injectable()
-export class LimitedRabbitmqProducer {
+export class LimitedRabbitmqConsumer {
 
   public channel: any;
 
@@ -28,8 +28,6 @@ export class LimitedRabbitmqProducer {
 
   private Exchange_DLX: string;
 
-  private Queue_DLX: string;
-
   private RoutingKey_DLX: string;
 
   /** 创建Rabbitmq之后的连接 **/
@@ -40,14 +38,13 @@ export class LimitedRabbitmqProducer {
   ) { };
 
   /** 消息队列初始化 **/
-  public async initialize(options: IPublishOption) {
+  public async initialize(options: IListenerOption) {
     try {
       const { exchangeName, routerName, queueName } = options;
       this.Exchange_TTL = `${exchangeName}_TTL`;
       this.Queue_TTL = `${queueName}_TTL`;
       this.RoutingKey_TTL = `${routerName}_TTL`;
       this.Exchange_DLX = `${exchangeName}_DLX`;
-      this.Queue_DLX = `${queueName}_DLX`;
       this.RoutingKey_DLX = `${routerName}_DLX`;
       const { rabbitmq } = await this.$ApplicationConfigManager.getRuntimeConfig();
       const rabbitConfig = {
@@ -60,14 +57,14 @@ export class LimitedRabbitmqProducer {
         protocol: "amqp",
         ...rabbitConfig
       });
-      logger.info(green("RabbitMQ-生产者-连接成功!"));
+      logger.info(green("RabbitMQ-消费者-连接成功!"));
       /** 处理断线重连 **/
       this.connection.on("close", (error) => {
-        logger.error("RabbitMQ连接已关闭,2s后准备重新连接", error);
+        logger.error(red(`RabbitMQ连接已关闭,2s后准备重新连接 ${error}`));
         return setTimeout(this.initialize, 2000);
       });
     } catch (error) {
-      logger.error(red("RabbitMQ连接初始化发生错误,2s后准备重新连接"), error);
+      logger.error(red(`RabbitMQ连接初始化发生错误,2s后准备重新连接 ${error}`));
       return setTimeout(this.initialize, 2000);
     };
   };
@@ -78,36 +75,31 @@ export class LimitedRabbitmqProducer {
     console.log("RabbitMQ 已断开连接!!!");
   };
 
-  /** 创建一个并行队列 **/
-  public async createQueueWithExchange() {
+  /** 创建或加入一个频道 **/
+  public async createChannelWithExchange() {
+
     this.channel = await this.connection.createChannel();
-    await this.channel.assertExchange(this.Exchange_DLX, "direct", { durable: true, autoDelete: true });
-    await this.channel.assertQueue(this.Queue_DLX, {
-      durable: true,
-      exclusive: false,
-    });
-    await this.channel.bindQueue(this.Queue_DLX, this.Exchange_DLX, this.RoutingKey_DLX);
-    //创建消息队列
-    await this.channel.assertExchange(this.Exchange_TTL, "direct", { durable: true, autoDelete: true, });
+    /** 生成频道的时候是使用交换机模式 **/
+    await this.channel.assertExchange(this.Exchange_TTL, "direct", { durable: true, autoDelete: true });
     await this.channel.assertQueue(this.Queue_TTL, {
       durable: true,
       deadLetterExchange: this.Exchange_DLX,
       deadLetterRoutingKey: this.RoutingKey_DLX
     });
+    /** 消费端限流,每次取有限个进行消费 **/
+    await this.channel.prefetch(20);
+    await this.channel.qos(20);
     await this.channel.bindQueue(this.Queue_TTL, this.Exchange_TTL, this.RoutingKey_TTL);
     return true;
   };
 
-  /** 创建一个并行队列 **/
-  public async publishWithExchange(message: any) {
-    await this.channel.publish(this.Exchange_TTL, this.RoutingKey_TTL, Buffer.from(message), {
-      deliveryMode: 2,
-      persistent: true,
-    });
+  /** 增加一个监听器 **/
+  public async addListener(callback) {
+    this.channel.consume(this.Queue_TTL, (message: any) => callback(message, this.channel), { noAck: false });
     return true;
   };
 
 };
 
-IOCContainer.bind(LimitedRabbitmqProducer).toSelf().inSingletonScope();
 
+IOCContainer.bind(LimitedRabbitmqConsumer).toSelf().inSingletonScope();

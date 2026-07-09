@@ -1,16 +1,16 @@
 import { injectable, inject } from "inversify";
 import { Router, Request, Response } from "express";
 
-// import { QueryBuilderManager } from "@/backend/commons/MySQL/QueryBuilderManager";
-// import { RedisConnectManager } from "@/backend/commons/Redis/RedisConnectManager";
-import { IOCContainer } from "@/backend/cores/IOCContainer";
+// import { QueryBuilderManager } from "@/main/commons/MySQL/QueryBuilderManager";
+// import { RedisConnectManager } from "@/main/commons/Redis/RedisConnectManager";
+import { IOCContainer } from "@/main/cores/IOCContainer";
 
-import { TransientFactoryServiceFactory, TransientFactoryServiceProvider } from "@/backend/services/TransientFactoryService";
-import { RequestFactoryServiceFactory, RequestFactoryServiceProvider } from "@/backend/services/RequestFactoryService";
-import { UserMessageService } from "@/backend/services/UserMessageService";
-import { SessionInfoService } from "@/backend/services/SessionInfoService";
+import { TransientFactoryServiceFactory, TransientFactoryServiceProvider } from "@/main/services/TransientFactoryService";
+import { RequestFactoryServiceFactory, RequestFactoryServiceProvider } from "@/main/services/RequestFactoryService";
+import { UserMessageService } from "@/main/services/UserMessageService";
+import { SessionInfoService } from "@/main/services/SessionInfoService";
 
-import { responseWrap } from "@/backend/utils/responseWrap";
+import { responseWrap } from "@/main/utils/responseWrap";
 
 /**
  * @openapi

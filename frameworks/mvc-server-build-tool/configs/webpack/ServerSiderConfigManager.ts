@@ -41,7 +41,7 @@ export class ServerSiderConfigManager {
       target: "node",
       output: {
         path: assetsDirectoryPath,
-        filename: "backend.js",
+        filename: "core.js",
         devtoolModuleFilenameTemplate: "[absolute-resource-path]"
       },
       resolve: {

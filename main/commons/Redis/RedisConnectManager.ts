@@ -1,8 +1,8 @@
 import { injectable, inject } from "inversify";
 import { createClient, RedisClientType } from "redis";
 
-import { IOCContainer } from "@/backend/cores/IOCContainer";
-import { ApplicationConfigManager } from "@/backend/commons/Application/ApplicationConfigManager";
+import { IOCContainer } from "@/main/cores/IOCContainer";
+import { ApplicationConfigManager } from "@/main/commons/Application/ApplicationConfigManager";
 
 @injectable()
 export class RedisConnectManager {

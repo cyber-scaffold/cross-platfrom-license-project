@@ -3,15 +3,15 @@ import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import { injectable, inject } from "inversify";
 
-import { IOCContainer } from "@/backend/cores/IOCContainer";
-import { ApplicationConfigManager } from "@/backend/commons/Application/ApplicationConfigManager";
+import { IOCContainer } from "@/main/cores/IOCContainer";
+import { ApplicationConfigManager } from "@/main/commons/Application/ApplicationConfigManager";
 
-import { requestMiddleware } from "@/backend/interceptors/requestMiddleware";
+import { requestMiddleware } from "@/main/interceptors/requestMiddleware";
 
-import { TestPostController } from "@/backend/controllers/TestPostController";
-import { TestGetController } from "@/backend/controllers/TestGetController";
+import { TestPostController } from "@/main/controllers/TestPostController";
+import { TestGetController } from "@/main/controllers/TestGetController";
 
-import { logger } from "@/backend/utils/logger";
+import { logger } from "@/main/utils/logger";
 
 import type { Server } from "http";
 import type { Express } from "express";

@@ -42,8 +42,8 @@ export class MakeServerApplication {
     });
     nodemon({
       verbose: true,
-      watch: [path.resolve(assetsDirectoryPath, "./backend.js")],
-      script: path.resolve(assetsDirectoryPath, "./backend.js")
+      watch: [path.resolve(assetsDirectoryPath, "./core.js")],
+      script: path.resolve(assetsDirectoryPath, "./core.js")
     });
     webpackDevelopmentCompiler.watch({ ignored: "**/node_modules/**" }, async (error, stats) => {
       if (error) {

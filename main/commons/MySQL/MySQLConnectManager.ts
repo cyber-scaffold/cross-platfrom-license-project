@@ -1,8 +1,8 @@
 import { createPool } from "mysql2/promise";
 import { injectable, inject } from "inversify";
 
-import { IOCContainer } from "@/backend/cores/IOCContainer";
-import { ApplicationConfigManager } from "@/backend/commons/Application/ApplicationConfigManager";
+import { IOCContainer } from "@/main/cores/IOCContainer";
+import { ApplicationConfigManager } from "@/main/commons/Application/ApplicationConfigManager";
 
 import type { Pool, PoolConnection } from "mysql2/promise";
 
