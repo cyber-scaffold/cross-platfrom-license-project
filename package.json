@@ -2,7 +2,7 @@
   "name": "cross-platfrom-license-project",
   "version": "1.0.0",
   "description": "将nodejs编译为Single Executable Application并进行授权加密的商业化框架",
-  "main": "./assets/backend.js",
+  "main": "./dist/core.js",
   "scripts": {
     "dev": "node -r esbuild-register ./frameworks/mvc-server-build-tool/development.ts",
     "build": "node -r esbuild-register ./frameworks/mvc-server-build-tool/build.ts",
