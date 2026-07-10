@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import slash from "slash";
 import memfs from "memfs";
 import { ufs } from "unionfs";
 import { v4 as uuid } from "uuid";
@@ -24,7 +25,7 @@ import type { IUnionFs, IFS } from "unionfs";
 @injectable()
 export class ConvertDehydrationEntryFile {
 
-  private virtualDirectoryPath = path.resolve(process.cwd(), `./${uuid()}/__virtual__/dehydration/`);
+  private virtualDirectoryPath = slash(path.resolve(process.cwd(), `./${uuid()}/__virtual__/dehydration/`));
 
   private custmerFileSystem: IUnionFs = ufs.use((memfs.fs as unknown as IFS)).use(fs);
 
@@ -49,7 +50,7 @@ export class ConvertDehydrationEntryFile {
       return [alias, [
         "esbuild-register",
         "source-map-support/register",
-        path.join(this.getVirtualDirectoryPath(), `./${alias}.entry.tsx`)
+        slash(path.join(this.getVirtualDirectoryPath(), `./${alias}.entry.tsx`))
       ]];
     }));
   };

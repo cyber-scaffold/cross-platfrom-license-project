@@ -1,4 +1,5 @@
 import path from "path";
+import slash from "slash";
 import { Low } from "lowdb";
 import { JSONFile } from "lowdb/node";
 import { injectable, inject } from "inversify";
@@ -24,9 +25,9 @@ export class CompilationMaterielResourceDatabaseManager {
   public async initialize() {
     try {
       const { assetsDirectoryPath } = await this.$CompilationConfigManager.getRuntimeConfig();
-      this.summaryDatabase = new Low(new JSONFile(path.resolve(assetsDirectoryPath, "./summary.json")), {});
-      this.hydrationCompileDatabase = new Low(new JSONFile(path.resolve(assetsDirectoryPath, "./hydration-compile.json")), {});
-      this.dehydrationCompileDatabase = new Low(new JSONFile(path.resolve(assetsDirectoryPath, "./dehydration-compile.json")), {});
+      this.summaryDatabase = new Low(new JSONFile(slash(path.resolve(assetsDirectoryPath, "./summary.json"))), {});
+      this.hydrationCompileDatabase = new Low(new JSONFile(slash(path.resolve(assetsDirectoryPath, "./hydration-compile.json"))), {});
+      this.dehydrationCompileDatabase = new Low(new JSONFile(slash(path.resolve(assetsDirectoryPath, "./dehydration-compile.json"))), {});
     } catch (error) {
       throw error;
     };

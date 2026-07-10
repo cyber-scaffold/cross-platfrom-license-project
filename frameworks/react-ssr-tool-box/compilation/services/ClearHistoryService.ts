@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import slash from "slash";
 import { promisify } from "util";
 import pathExists from "path-exists";
 import { injectable, inject } from "inversify";
@@ -28,10 +29,10 @@ export class ClearHistoryService {
       dehydrationResourceDirectoryPath
     } = await this.$CompilationConfigManager.getRuntimeConfig();
     if (type === "hydration") {
-      return path.resolve(hydrationResourceDirectoryPath, filename);
+      return slash(path.resolve(hydrationResourceDirectoryPath, filename));
     };
     if (type === "dehydration") {
-      return path.resolve(dehydrationResourceDirectoryPath, filename);
+      return slash(path.resolve(dehydrationResourceDirectoryPath, filename));
     };
     throw new Error(`
       ${filename} unknow Resource Type Do You Mean "hydration" or "dehydration" or file not exist

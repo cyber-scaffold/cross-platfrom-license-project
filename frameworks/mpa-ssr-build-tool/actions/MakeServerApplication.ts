@@ -33,6 +33,7 @@ export class MakeServerApplication {
     await new Promise((resolve, reject) => {
       webpackDevelopmentCompiler.run((error, stats) => {
         if (error) {
+          // console.log(error);
           reject(error);
         } else {
           console.log(stats.toString({ colors: true }));
@@ -64,6 +65,7 @@ export class MakeServerApplication {
     await new Promise((resolve, reject) => {
       webpackProductionCompiler.run((error, stats) => {
         if (error) {
+          console.log(error);
           reject(error);
         } else {
           console.log(stats.toString({ colors: true }));
