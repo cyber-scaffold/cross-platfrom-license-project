@@ -51,7 +51,7 @@ export class ServerSiderRenderService {
         </body>
       </html>
     );
-    return pretty(contentString);
+    return ["<!DOCTYPE html>", pretty(contentString)].join("\n");
   };
 
 };
