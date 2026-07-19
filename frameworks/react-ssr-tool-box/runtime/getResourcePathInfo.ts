@@ -33,7 +33,6 @@ export async function getResourcePathInfo(): Promise<ResourcePathInfoType> {
    * Swagger静态资源所在的目录
    * **/
   const swaggerResourceDirectory = path.join(assetsDirectoryPath, "swagger");
-
   return {
     assetsDirectoryName,
     assetsDirectoryPath,

@@ -1,14 +1,14 @@
 import path from "path";
 import { injectable, inject } from "inversify";
 
-import { IOCContainer } from "@/frameworks/react-ssr-tool-box/compilation/cores/IOCContainer";
-import { CompilationConfigManager } from "@/frameworks/react-ssr-tool-box/compilation/commons/CompilationConfigManager";
+import { IOCContainer } from "@/frameworks/mpx-build-tool/cores/IOCContainer";
+import { FrameworkConfigManager } from "@/frameworks/mpx-build-tool/commons/FrameworkConfigManager";
 
 @injectable()
 export class ScriptLoaderConfigManger {
 
   constructor (
-    @inject(CompilationConfigManager) private readonly $CompilationConfigManager: CompilationConfigManager
+    @inject(FrameworkConfigManager) private readonly $FrameworkConfigManager: FrameworkConfigManager
   ) { };
 
   /**
@@ -16,15 +16,30 @@ export class ScriptLoaderConfigManger {
    * **/
   private async getNodeModulesRules() {
     return [{
-      loader: "esbuild-loader"
+      loader: "esbuild-loader",
+      options: {}
     }];
   };
+
+  /**
+   * 对于自研框架的项目文件则需要使用ts-loader
+   * **/
+  private async getFrameworksRules() {
+    const { projectDirectoryPath } = this.$FrameworkConfigManager.getRuntimeConfig();
+    return [{
+      loader: "ts-loader",
+      options: {
+        configFile: path.resolve(projectDirectoryPath, "./tsconfig.json")
+      }
+    }];
+  };
+
 
   /**
    * 对于其余的项目文件则需要使用ts-loader和babel-loader
    * **/
   private async getProjectRules() {
-    const { projectDirectoryPath } = this.$CompilationConfigManager.getRuntimeConfig();
+    const { projectDirectoryPath } = this.$FrameworkConfigManager.getRuntimeConfig();
     return [{
       loader: "babel-loader",
       options: {
@@ -43,7 +58,11 @@ export class ScriptLoaderConfigManger {
       test: /\.(js|jsx|ts|tsx|mjs|cjs)$/,
       oneOf: [{
         include: /(node_modules)/,
+        type: "javascript/esm",
         use: await this.getNodeModulesRules()
+      }, {
+        include: /(frameworks)/,
+        use: await this.getFrameworksRules()
       }, {
         use: await this.getProjectRules()
       }]

@@ -2,7 +2,7 @@ import path from "path";
 import React from "react";
 import { get } from "dot-prop";
 import { injectable, inject } from "inversify";
-import { getRuntimeConfiguration, getResourceSummary, getDehydratedResource, getHydrationResource, renderDehydratedResourceWithSandbox } from "@/frameworks/react-ssr-tool-box/runtime";
+import { getRuntimeConfiguration, getResourceSummary, getDehydrateResource, getHydrateResource, renderDehydrateResourceWithSandbox } from "@/frameworks/react-ssr-tool-box/runtime";
 
 import { IOCContainer } from "@/main/server/cores/IOCContainer";
 import packageJSONContent from "@/package.json";
@@ -56,7 +56,7 @@ export class DehydrateInfomationService {
 
   /** 生成脱水视图 **/
   public async generateDehydrateHTMLContent(params: ServerSiderRenderParamsType): Promise<ReactNode | false> {
-    const dehydrateAssets = await getDehydratedResource(params.alias);
+    const dehydrateAssets = await getDehydrateResource(params.alias);
     /** 没有脱水渲染物料时的操作 **/
     if (!dehydrateAssets) {
       const _DEHYDRATE_HTML_CONTENT_ = (<div id="root" />);
@@ -74,7 +74,7 @@ export class DehydrateInfomationService {
       return _DEHYDRATE_HTML_CONTENT_;
     };
     /** 如果存在脱水渲染脚本的话就需要进行脱水视图的渲染 **/
-    const dehydrateHTMLContent = await renderDehydratedResourceWithSandbox(dehydrateAssets.javascript[0], this._INJECTABLE_DEHYDRATE_CONTENT_);
+    const dehydrateHTMLContent = await renderDehydrateResourceWithSandbox(dehydrateAssets.javascript[0], this._INJECTABLE_DEHYDRATE_CONTENT_);
     const _DEHYDRATE_HTML_CONTENT_ = (<div id="root" dangerouslySetInnerHTML={{ __html: dehydrateHTMLContent }} />);
     this._DEHYDRATE_HTML_CONTENT_ = _DEHYDRATE_HTML_CONTENT_;
     return _DEHYDRATE_HTML_CONTENT_;
@@ -88,7 +88,7 @@ export class DehydrateInfomationService {
     };
     const { assetsDirectoryPath, extractResourceDirectoryPath } = await getRuntimeConfiguration();
     if (resourceSummary.hydrate) {
-      const hydrateAssets = await getHydrationResource(params.alias);
+      const hydrateAssets = await getHydrateResource(params.alias);
       if (!hydrateAssets) {
         return false;
       };
@@ -99,7 +99,7 @@ export class DehydrateInfomationService {
       return _HYDRATE_STYLE_SHEET_TAGS_;
     };
     if (resourceSummary.dehydrate) {
-      const dehydratedAssets = await getDehydratedResource(params.alias);
+      const dehydratedAssets = await getDehydrateResource(params.alias);
       if (!dehydratedAssets) {
         return false;
       };
@@ -113,13 +113,13 @@ export class DehydrateInfomationService {
 
   /** 生成前端的注水标签 **/
   public async generateHydrateScriptTags(params: ServerSiderRenderParamsType): Promise<ReactNode | false> {
-    const { assetsDirectoryPath, hydrationResourceDirectoryPath } = await getRuntimeConfiguration();
-    const hydrateAssets = await getHydrationResource(params.alias);
+    const { assetsDirectoryPath, hydrateResourceDirectoryPath } = await getRuntimeConfiguration();
+    const hydrateAssets = await getHydrateResource(params.alias);
     if (!hydrateAssets) {
       return false;
     };
     const _HYDRATE_SCRIPT_TAGS_ = get(hydrateAssets, "javascript", []).map((javascriptResourceRelativePath: string) => (
-      <script key={javascriptResourceRelativePath} src={path.join(hydrationResourceDirectoryPath, javascriptResourceRelativePath).replace(assetsDirectoryPath, "")} />
+      <script key={javascriptResourceRelativePath} src={path.join(hydrateResourceDirectoryPath, javascriptResourceRelativePath).replace(assetsDirectoryPath, "")} />
     ));
     this._HYDRATE_SCRIPT_TAGS_ = _HYDRATE_SCRIPT_TAGS_;
     return _HYDRATE_SCRIPT_TAGS_;

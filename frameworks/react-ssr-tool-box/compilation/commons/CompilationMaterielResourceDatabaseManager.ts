@@ -1,5 +1,4 @@
 import path from "path";
-import slash from "slash";
 import { Low } from "lowdb";
 import { JSONFile } from "lowdb/node";
 import { injectable, inject } from "inversify";
@@ -14,9 +13,9 @@ export class CompilationMaterielResourceDatabaseManager {
 
   private summaryDatabase: Low<SummaryDatabaseDictionaryType>;
 
-  private hydrationCompileDatabase: Low<ResourceDatabaseDictionaryType>;
+  private hydrateCompileDatabase: Low<ResourceDatabaseDictionaryType>;
 
-  private dehydrationCompileDatabase: Low<ResourceDatabaseDictionaryType>;
+  private dehydrateCompileDatabase: Low<ResourceDatabaseDictionaryType>;
 
   constructor (
     @inject(CompilationConfigManager) private readonly $CompilationConfigManager: CompilationConfigManager
@@ -25,9 +24,9 @@ export class CompilationMaterielResourceDatabaseManager {
   public async initialize() {
     try {
       const { assetsDirectoryPath } = await this.$CompilationConfigManager.getRuntimeConfig();
-      this.summaryDatabase = new Low(new JSONFile(slash(path.resolve(assetsDirectoryPath, "./summary.json"))), {});
-      this.hydrationCompileDatabase = new Low(new JSONFile(slash(path.resolve(assetsDirectoryPath, "./hydration-compile.json"))), {});
-      this.dehydrationCompileDatabase = new Low(new JSONFile(slash(path.resolve(assetsDirectoryPath, "./dehydration-compile.json"))), {});
+      this.summaryDatabase = new Low(new JSONFile(path.resolve(assetsDirectoryPath, "./summary.json")), {});
+      this.hydrateCompileDatabase = new Low(new JSONFile(path.resolve(assetsDirectoryPath, "./hydrate-compile.json")), {});
+      this.dehydrateCompileDatabase = new Low(new JSONFile(path.resolve(assetsDirectoryPath, "./dehydrate-compile.json")), {});
     } catch (error) {
       throw error;
     };
@@ -37,12 +36,12 @@ export class CompilationMaterielResourceDatabaseManager {
     return this.summaryDatabase;
   };
 
-  public getHydrationCompileDatabase(): Low<ResourceDatabaseDictionaryType> {
-    return this.hydrationCompileDatabase;
+  public getHydrateCompileDatabase(): Low<ResourceDatabaseDictionaryType> {
+    return this.hydrateCompileDatabase;
   };
 
-  public getDehydrationCompileDatabase(): Low<ResourceDatabaseDictionaryType> {
-    return this.dehydrationCompileDatabase;
+  public getDehydrateCompileDatabase(): Low<ResourceDatabaseDictionaryType> {
+    return this.dehydrateCompileDatabase;
   };
 
 };

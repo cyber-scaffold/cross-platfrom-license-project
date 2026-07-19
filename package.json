@@ -5,8 +5,8 @@
   "description": "将nodejs编译为Single Executable Application并进行授权加密的商业化框架",
   "main": "./dist/core.js",
   "scripts": {
-    "dev": "node -r esbuild-register ./frameworks/mpa-ssr-build-tool/development.ts",
-    "build": "node -r esbuild-register ./frameworks/mpa-ssr-build-tool/build.ts",
+    "dev": "node -r esbuild-register ./frameworks/mpx-build-tool/development.ts",
+    "build": "node -r esbuild-register ./frameworks/mpx-build-tool/build.ts",
     "pack:linux": "npm run build && node --build-sea sea-config-linux.json",
     "pack:win64": "npm run build && node --build-sea sea-config-win64.json"
   },
