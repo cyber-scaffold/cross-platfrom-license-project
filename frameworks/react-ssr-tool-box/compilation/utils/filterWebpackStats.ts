@@ -1,4 +1,5 @@
 import path from "path";
+import slash from "slash";
 import { fromPairs } from "lodash";
 
 import type { StatsCompilation } from "webpack";
@@ -21,15 +22,15 @@ export function filterWebpackStats(statsJson: StatsCompilation): CompileAssetsDi
       };
       /** 分析出javascript文件 **/
       if (everyAssetsFileName.match(/\.(js)$/ig)) {
-        composeAssetsList["javascript"].push(path.basename(everyAssetsFileName));
+        composeAssetsList["javascript"].push(slash(path.basename(everyAssetsFileName)));
       };
       /** 分析出css文件 **/
       if (everyAssetsFileName.match(/\.(css)$/ig)) {
-        composeAssetsList["stylesheet"].push(path.basename(everyAssetsFileName));
+        composeAssetsList["stylesheet"].push(slash(path.basename(everyAssetsFileName)));
       };
       /** 分析出静态文件 **/
       if (everyAssetsFileName.match(/\.(ico|png|jpg|jpeg|gif|mp3|mp4|avi|svg|ttf|eot|otf|fon|ttc|woff|woff2)$/ig)) {
-        composeAssetsList["statics"].push(path.basename(everyAssetsFileName));
+        composeAssetsList["statics"].push(slash(path.basename(everyAssetsFileName)));
       };
     });
     return [everyAssetsId, composeAssetsList];

@@ -1,4 +1,5 @@
 import path from "path";
+import slash from "slash";
 import React from "react";
 import { get } from "dot-prop";
 import { injectable, inject } from "inversify";
@@ -93,7 +94,7 @@ export class DehydrateInfomationService {
         return false;
       };
       const _HYDRATE_STYLE_SHEET_TAGS_ = get(hydrateAssets, "stylesheet", []).map((stylesheetResourceRelativePath: string) => (
-        <link key={stylesheetResourceRelativePath} rel="stylesheet" href={path.join(extractResourceDirectoryPath, stylesheetResourceRelativePath).replace(assetsDirectoryPath, "")} />
+        <link key={stylesheetResourceRelativePath} rel="stylesheet" href={slash(path.join(extractResourceDirectoryPath, stylesheetResourceRelativePath)).replace(slash(assetsDirectoryPath), "")} />
       ));
       this._HYDRATE_STYLE_SHEET_TAGS_ = _HYDRATE_STYLE_SHEET_TAGS_;
       return _HYDRATE_STYLE_SHEET_TAGS_;
@@ -104,7 +105,7 @@ export class DehydrateInfomationService {
         return false;
       };
       const _HYDRATE_STYLE_SHEET_TAGS_ = get(dehydratedAssets, "stylesheet", []).map((stylesheetResourceRelativePath: string) => (
-        <link key={stylesheetResourceRelativePath} rel="stylesheet" href={path.join(extractResourceDirectoryPath, stylesheetResourceRelativePath).replace(assetsDirectoryPath, "")} />
+        <link key={stylesheetResourceRelativePath} rel="stylesheet" href={slash(path.join(extractResourceDirectoryPath, stylesheetResourceRelativePath)).replace(slash(assetsDirectoryPath), "")} />
       ));
       this._HYDRATE_STYLE_SHEET_TAGS_ = _HYDRATE_STYLE_SHEET_TAGS_;
       return _HYDRATE_STYLE_SHEET_TAGS_;
@@ -119,7 +120,7 @@ export class DehydrateInfomationService {
       return false;
     };
     const _HYDRATE_SCRIPT_TAGS_ = get(hydrateAssets, "javascript", []).map((javascriptResourceRelativePath: string) => (
-      <script key={javascriptResourceRelativePath} src={path.join(hydrateResourceDirectoryPath, javascriptResourceRelativePath).replace(assetsDirectoryPath, "")} />
+      <script key={javascriptResourceRelativePath} src={slash(path.join(hydrateResourceDirectoryPath, javascriptResourceRelativePath)).replace(slash(assetsDirectoryPath), "")} />
     ));
     this._HYDRATE_SCRIPT_TAGS_ = _HYDRATE_SCRIPT_TAGS_;
     return _HYDRATE_SCRIPT_TAGS_;

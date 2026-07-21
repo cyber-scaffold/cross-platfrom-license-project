@@ -1,4 +1,5 @@
 import path from "path";
+import slash from "slash";
 import { difference } from "lodash";
 import { readFile } from "jsonfile";
 import { injectable, inject } from "inversify";
@@ -24,7 +25,7 @@ export class ComputedExternalsModules {
    *  **/
   public async getComputedExternalsPackageList(): Promise<string[]> {
     const { projectDirectoryPath, dehydrateIncludePackageList, dehydrateExcludePackageList } = this.$CompilationConfigManager.getRuntimeConfig();
-    const { dependencies, devDependencies } = await readFile(path.join(projectDirectoryPath, "./package.json"));
+    const { dependencies, devDependencies } = await readFile(slash(path.join(projectDirectoryPath, "./package.json")));
     const externalsPackageNameList = [...Object.keys(dependencies), ...Object.keys(devDependencies)];
     const result = [...difference(externalsPackageNameList, dehydrateIncludePackageList), ...dehydrateExcludePackageList];
     return result;

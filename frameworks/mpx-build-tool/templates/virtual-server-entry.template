@@ -1,10 +1,11 @@
 import path from "path";
+import slash from "slash";
 import {
   saveProjectDirectoryAbsolutePath,
   saveProjectEntryFileAbsolutePath
 } from "@/frameworks/react-ssr-tool-box/runtime";
 
-saveProjectDirectoryAbsolutePath(path.resolve(path.dirname(__filename),"../"));
-saveProjectEntryFileAbsolutePath(__filename);
+saveProjectDirectoryAbsolutePath(slash(path.resolve(path.dirname(__filename),"../")));
+saveProjectEntryFileAbsolutePath(slash(__filename));
 
 import "$$REAL_ENTRY_FILE_FULL_PATH$$";

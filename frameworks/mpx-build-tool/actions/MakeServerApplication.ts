@@ -1,4 +1,5 @@
 import path from "path";
+import slash from "slash";
 import nodemon from "nodemon";
 import { injectable, inject } from "inversify";
 
@@ -42,10 +43,10 @@ export class MakeServerApplication {
     });
     nodemon({
       verbose: true,
-      watch: [path.resolve(assetsDirectoryPath, "./server.js")],
-      script: path.resolve(assetsDirectoryPath, "./server.js")
+      watch: [slash(path.resolve(assetsDirectoryPath, "./server.js"))],
+      script: slash(path.resolve(assetsDirectoryPath, "./server.js"))
     });
-    webpackDevelopmentCompiler.watch({ ignored: "**/node_modules/**" }, async (error, stats) => {
+    webpackDevelopmentCompiler.watch({ ignored: slash("**/node_modules/**") }, async (error, stats) => {
       if (error) {
         console.log(error);
       } else {

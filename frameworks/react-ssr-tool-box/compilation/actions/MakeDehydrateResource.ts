@@ -1,3 +1,4 @@
+import slash from "slash";
 import pathExists from "path-exists";
 import { injectable, inject } from "inversify";
 
@@ -51,7 +52,7 @@ export class MakeDehydrateResource {
     await dehydrateCompileDatabase.write();
     /** 获取开发环境下的编译对象 **/
     const webpackCompiler: Compiler = await this.$DehydrateConfigManager.getWebpackDevelopmentCompiler();
-    webpackCompiler.watch({ ignored: "**/node_modules/**", aggregateTimeout: 2000, poll: 1000 }, async (error, stats) => {
+    webpackCompiler.watch({ ignored: slash("**/node_modules/**"), aggregateTimeout: 2000, poll: 1000 }, async (error, stats) => {
       if (error) {
         console.log(error);
       } else {

@@ -1,4 +1,5 @@
 import path from "path";
+import slash from "slash";
 import webpack from "webpack";
 import WebpackBar from "webpackbar";
 import { merge } from "webpack-merge";
@@ -47,7 +48,7 @@ export class ServerSiderConfigManager {
       resolve: {
         extensions: [".ts", ".tsx", ".js", ".jsx"],
         alias: {
-          "@": process.cwd()
+          "@": slash(process.cwd())
         }
       },
       // node: {
@@ -57,7 +58,7 @@ export class ServerSiderConfigManager {
       // },
       externalsPresets: { node: true },
       externals: [nodeExternals({
-        modulesFromFile: path.resolve(projectDirectoryPath, "./package.json")
+        modulesFromFile: slash(path.resolve(projectDirectoryPath, "./package.json"))
       })],
       module: {
         rules: (await Promise.all([

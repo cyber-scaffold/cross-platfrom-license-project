@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import memfs from "memfs";
+import slash from "slash";
 import { ufs } from "unionfs";
 import { v4 as uuid } from "uuid";
 import { fromPairs } from "lodash";
@@ -25,7 +26,7 @@ import type { IUnionFs, IFS } from "unionfs";
 @injectable()
 export class ConvertHydrateEntryFile {
 
-  private virtualDirectoryPath = path.resolve(process.cwd(), `./${uuid()}/__virtual__/hydrate/`);
+  private virtualDirectoryPath = slash(path.resolve(process.cwd(), `./${uuid()}/__virtual__/hydrate/`));
 
   private custmerFileSystem: IUnionFs = ufs.use((memfs.fs as unknown as IFS)).use(fs);
 
@@ -47,7 +48,7 @@ export class ConvertHydrateEntryFile {
     memfs.vol.fromJSON(fromPairs(virtualFileVolumePairs), this.virtualDirectoryPath);
     /** 生成详细的webpackEntryPoints **/
     this.webpackEntryPoints = fromPairs(materielPairs.map(([alias]) => {
-      return [alias, [path.join(this.getVirtualDirectoryPath(), `./${alias}.entry.tsx`)]];
+      return [alias, [slash(path.join(this.getVirtualDirectoryPath(), `./${alias}.entry.tsx`))]];
     }));
   };
 

@@ -1,6 +1,7 @@
 import vm from "vm";
 import fs from "fs";
 import path from "path";
+import slash from "slash";
 import Module from "module";
 import { promisify } from "util";
 import { getWindow, getDocument } from "ssr-window";
@@ -15,9 +16,9 @@ export async function renderDehydrateResourceWithSandbox(resourceFilePath: strin
   const $RuntimeConfigManager = IOCContainer.get(RuntimeConfigManager);
   const { projectDirectoryPath, dehydrateResourceDirectoryPath } = $RuntimeConfigManager.getRuntimeConfig();
   /** 由于脱水物料的路径信息使用的是相对路径,最终的真实路径需要在运行时进行实时计算 **/
-  const realDehydrateResourceFilePath = path.resolve(dehydrateResourceDirectoryPath, resourceFilePath);
+  const realDehydrateResourceFilePath = slash(path.resolve(dehydrateResourceDirectoryPath, resourceFilePath));
   const resourceFileCode = await promisify(fs.readFile)(realDehydrateResourceFilePath, "utf-8");
-  const requireProject: NodeJS.Require = Module.createRequire(path.resolve(projectDirectoryPath, "./package.json"));
+  const requireProject: NodeJS.Require = Module.createRequire(slash(path.resolve(projectDirectoryPath, "./package.json")));
   const sandbox = {
     module: { exports: {} },
     exports: {},
@@ -25,7 +26,7 @@ export async function renderDehydrateResourceWithSandbox(resourceFilePath: strin
     window: getWindow(),
     document: getDocument(),
     require: requireProject,
-    __dirname: path.dirname(realDehydrateResourceFilePath),
+    __dirname: slash(path.dirname(realDehydrateResourceFilePath)),
     __filename: realDehydrateResourceFilePath,
     console
   };

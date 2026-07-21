@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import slash from "slash";
 import memfs from "memfs";
 import { ufs } from "unionfs";
 import { promisify } from "util";
@@ -21,7 +22,7 @@ import type { IUnionFs, IFS } from "unionfs";
 @injectable()
 export class ServerProjectVirtualFile {
 
-  private virtualDirectoryPath = path.resolve(process.cwd(), `./${uuid()}/__virtual__/project/`);
+  private virtualDirectoryPath = slash(path.resolve(process.cwd(), `./${uuid()}/__virtual__/project/`));
 
   private custmerFileSystem: IUnionFs = ufs.use((memfs.fs as unknown as IFS)).use(fs);
 
@@ -30,7 +31,7 @@ export class ServerProjectVirtualFile {
   ) { };
 
   private async getVirtualEntryFileAndReplaceContent(): Promise<string> {
-    const originContent = await promisify(fs.readFile)(path.resolve(__dirname, "../templates/virtual-server-entry.template"), "utf-8");
+    const originContent = await promisify(fs.readFile)(slash(path.resolve(__dirname, "../templates/virtual-server-entry.template")), "utf-8");
     return originContent;
   };
 
@@ -61,7 +62,7 @@ export class ServerProjectVirtualFile {
     return [
       "esbuild-register",
       "source-map-support/register",
-      path.join(this.getVirtualDirectoryPath(), "./server.entry.ts")
+      slash(path.join(this.getVirtualDirectoryPath(), "./server.entry.ts"))
     ];
   };
 

@@ -1,4 +1,5 @@
 import path from "path";
+import slash from "slash";
 import { injectable, inject } from "inversify";
 
 import { IOCContainer } from "@/frameworks/mpx-build-tool/cores/IOCContainer";
@@ -29,7 +30,7 @@ export class ScriptLoaderConfigManger {
     return [{
       loader: "ts-loader",
       options: {
-        configFile: path.resolve(projectDirectoryPath, "./tsconfig.json")
+        configFile: slash(path.resolve(projectDirectoryPath, "./tsconfig.json"))
       }
     }];
   };
@@ -43,12 +44,12 @@ export class ScriptLoaderConfigManger {
     return [{
       loader: "babel-loader",
       options: {
-        configFile: path.join(projectDirectoryPath, "./.babelrc.js")
+        configFile: slash(path.join(projectDirectoryPath, "./.babelrc.js"))
       }
     }, {
       loader: "ts-loader",
       options: {
-        configFile: path.resolve(projectDirectoryPath, "./tsconfig.json")
+        configFile: slash(path.resolve(projectDirectoryPath, "./tsconfig.json"))
       }
     }];
   };
