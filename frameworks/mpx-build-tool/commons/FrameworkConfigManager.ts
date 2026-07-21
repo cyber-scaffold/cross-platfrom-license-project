@@ -10,18 +10,19 @@ import { injectable } from "inversify";
 import { IOCContainer } from "@/frameworks/mpx-build-tool/cores/IOCContainer";
 import type { MaterielCompilationInfoType } from "@/frameworks/react-ssr-tool-box/compilation";
 
+
 @injectable()
 export class FrameworkConfigManager {
 
   /**
    * 入口文件
    * **/
-  private entryFile = slash(path.resolve(process.cwd(), "./main/server/index.ts"));
+  private entryFile = path.resolve(process.cwd(), "./main/server/index.ts");
 
   /**
    * 项目根目录的路径
    * **/
-  private projectDirectoryPath = slash(process.cwd());
+  private projectDirectoryPath = process.cwd();
 
   /**
    * 编译产物的目标地址的文件夹名称
@@ -31,37 +32,37 @@ export class FrameworkConfigManager {
   /**
    * 计算后得到的编译资产输出目录
    * **/
-  private assetsDirectoryPath = slash(path.resolve(this.projectDirectoryPath, this.assetsDirectoryName));
+  private assetsDirectoryPath = path.resolve(this.projectDirectoryPath, this.assetsDirectoryName);
 
   /**
    * 项目中静态资源的原始目录
    * **/
-  private staticResourceDirectorySourcePath = slash(path.resolve(this.projectDirectoryPath, "./main/server/statics/"));
+  private staticResourceDirectorySourcePath = path.resolve(this.projectDirectoryPath, "./main/server/statics/");
 
   /**
    * 项目中静态资源的目标目录
    * **/
-  private staticResourceDirectoryDestinationPath = slash(path.resolve(this.assetsDirectoryPath, "./statics/"));
+  private staticResourceDirectoryDestinationPath = path.resolve(this.assetsDirectoryPath, "./statics/");
 
   /**
    * Swagger在前端初始化时使用的文件
    * **/
-  private swaggerInitializer = slash(path.resolve(process.cwd(), "./main/server/cores/swagger-initializer.js"));
+  private swaggerInitializer = path.resolve(process.cwd(), "./main/server/cores/swagger-initializer.js");
 
   /**
    * 扫描Swagger文档时使用的glob表达式默认扫描controllers文件夹下的内容
    * **/
-  private extractSwaggerGlobExpression = slash(path.resolve(process.cwd(), "./main/server/controllers/**/*.{ts,tsx,js,jsx}"));
+  private extractSwaggerGlobExpression = path.resolve(process.cwd(), "./main/server/controllers/**/*.{ts,tsx,js,jsx}");
 
   /**
    * Swagger静态资源的原始目录的路径
    * **/
-  private swaggerResourceDirectorySourcePath = slash(path.resolve(path.dirname(__filename), "../swagger/"));
+  private swaggerResourceDirectorySourcePath = path.resolve(path.dirname(__filename), "../swagger/");
 
   /**
    * Swagger静态资源的目标目录的路径
    * **/
-  private swaggerResourceDirectoryDestinationPath = slash(path.resolve(this.assetsDirectoryPath, "./swagger/"));
+  private swaggerResourceDirectoryDestinationPath = path.resolve(this.assetsDirectoryPath, "./swagger/");
 
   /**
    * 针对脱水物料的优化
@@ -89,20 +90,20 @@ export class FrameworkConfigManager {
   /**
    * 项目目录下的配置文件路径用于覆盖框架中的默认值
    * **/
-  private custmerConfigPath = slash(path.join(process.cwd(), "./.framework.js"));
+  private custmerConfigPath = path.join(process.cwd(), "./.framework.js");
 
   /**
    * 基于沙箱模式加载项目的自定义配置文件
    * **/
   private async loadCustmerConfigWithSandbox() {
     const resourceFileCode = await promisify(fs.readFile)(this.custmerConfigPath, "utf-8");
-    const requireProject: NodeJS.Require = Module.createRequire(slash(path.resolve(process.cwd(), "./package.json")));
+    const requireProject: NodeJS.Require = Module.createRequire(path.resolve(process.cwd(), "./package.json"));
     const sandbox = {
       module: { exports: {} },
       exports: {},
       process: process,
       require: requireProject,
-      __dirname: slash(path.dirname(this.custmerConfigPath)),
+      __dirname: path.dirname(this.custmerConfigPath),
       __filename: this.custmerConfigPath,
       console
     };

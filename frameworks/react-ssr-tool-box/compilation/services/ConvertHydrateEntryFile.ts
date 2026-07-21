@@ -48,7 +48,7 @@ export class ConvertHydrateEntryFile {
     memfs.vol.fromJSON(fromPairs(virtualFileVolumePairs), this.virtualDirectoryPath);
     /** 生成详细的webpackEntryPoints **/
     this.webpackEntryPoints = fromPairs(materielPairs.map(([alias]) => {
-      return [alias, [slash(path.join(this.getVirtualDirectoryPath(), `./${alias}.entry.tsx`))]];
+      return [alias, [path.join(this.getVirtualDirectoryPath(), `./${alias}.entry.tsx`)]];
     }));
   };
 

@@ -1,4 +1,3 @@
-import slash from "slash";
 import pathExists from "path-exists";
 import { injectable, inject } from "inversify";
 
@@ -53,7 +52,7 @@ export class MakeHydrateResource {
     /** 生成编译对象 **/
     const webpackCompiler: Compiler = await this.$HydrateConfigManager.getWebpackDevelopmentCompiler();
     /** 开启一个编译对象 **/
-    webpackCompiler.watch({ ignored: slash("**/node_modules/**"), aggregateTimeout: 2000, poll: 1000 }, async (error, stats) => {
+    webpackCompiler.watch({ ignored: "**/node_modules/**", aggregateTimeout: 2000, poll: 1000 }, async (error, stats) => {
       if (error) {
         console.log(error);
       } else {

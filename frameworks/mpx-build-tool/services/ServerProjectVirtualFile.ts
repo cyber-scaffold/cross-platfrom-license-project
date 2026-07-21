@@ -22,7 +22,7 @@ import type { IUnionFs, IFS } from "unionfs";
 @injectable()
 export class ServerProjectVirtualFile {
 
-  private virtualDirectoryPath = slash(path.resolve(process.cwd(), `./${uuid()}/__virtual__/project/`));
+  private virtualDirectoryPath = path.resolve(process.cwd(), `./${uuid()}/__virtual__/project/`);
 
   private custmerFileSystem: IUnionFs = ufs.use((memfs.fs as unknown as IFS)).use(fs);
 
@@ -31,7 +31,7 @@ export class ServerProjectVirtualFile {
   ) { };
 
   private async getVirtualEntryFileAndReplaceContent(): Promise<string> {
-    const originContent = await promisify(fs.readFile)(slash(path.resolve(__dirname, "../templates/virtual-server-entry.template")), "utf-8");
+    const originContent = await promisify(fs.readFile)(path.resolve(__dirname, "../templates/virtual-server-entry.template"), "utf-8");
     return originContent;
   };
 
@@ -43,7 +43,7 @@ export class ServerProjectVirtualFile {
   public async initialize() {
     const { entryFile } = this.$FrameworkConfigManager.getRuntimeConfig();
     const originContent = await this.getVirtualEntryFileAndReplaceContent();
-    const replacedContent = originContent.replace("$$REAL_ENTRY_FILE_FULL_PATH$$", entryFile);
+    const replacedContent = originContent.replace("$$REAL_ENTRY_FILE_FULL_PATH$$", slash(entryFile));
     /** 在虚拟文件系统中生成一个空白的架构临时文件 **/
     memfs.vol.fromJSON({ "./server.entry.ts": replacedContent }, this.virtualDirectoryPath);
   };
@@ -62,7 +62,7 @@ export class ServerProjectVirtualFile {
     return [
       "esbuild-register",
       "source-map-support/register",
-      slash(path.join(this.getVirtualDirectoryPath(), "./server.entry.ts"))
+      path.join(this.getVirtualDirectoryPath(), "./server.entry.ts")
     ];
   };
 

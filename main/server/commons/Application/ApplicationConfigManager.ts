@@ -1,6 +1,5 @@
 import os from "os";
 import path from "path";
-import slash from "slash";
 import { injectable } from "inversify";
 
 import { getResourcePathInfo } from "@/frameworks/react-ssr-tool-box/runtime";
@@ -47,7 +46,7 @@ export class ApplicationConfigManager {
    * 用户自定义的静态资源指向的目录
    * 框架层的基准目录是根据 项目根目录的绝对路径 计算得到的
    * **/
-  private custmerStaticResourceDirectory: string = slash(path.join(os.homedir(), "statics"));
+  private custmerStaticResourceDirectory: string = path.join(os.homedir(), "statics");
 
   /** 初始化并加载配置到运行时 **/
   public async initialize() {

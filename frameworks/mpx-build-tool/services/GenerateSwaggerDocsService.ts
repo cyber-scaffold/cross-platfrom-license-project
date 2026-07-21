@@ -1,5 +1,4 @@
 import path from "path";
-import slash from "slash";
 import { writeFile } from "jsonfile";
 import { injectable, inject } from "inversify";
 import swaggerJSDocGenerater from "swagger-jsdoc";
@@ -16,7 +15,7 @@ export class GenerateSwaggerDocsService {
 
   public async execute() {
     const { swaggerResourceDirectoryDestinationPath, extractSwaggerGlobExpression } = this.$FrameworkConfigManager.getRuntimeConfig();
-    const destnationFilename = slash(path.resolve(swaggerResourceDirectoryDestinationPath, "./swagger.json"));
+    const destnationFilename = path.resolve(swaggerResourceDirectoryDestinationPath, "./swagger.json");
     const swaggerApiDocContent = swaggerJSDocGenerater({
       definition: {
         openapi: "3.0.0",

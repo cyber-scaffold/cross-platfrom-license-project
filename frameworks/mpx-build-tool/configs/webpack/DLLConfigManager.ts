@@ -1,5 +1,4 @@
 import path from "path";
-import slash from "slash";
 import WebpackBar from "webpackbar";
 import { merge } from "webpack-merge";
 import { injectable, inject } from "inversify";
@@ -31,7 +30,7 @@ export class DLLConfigManager {
         vendor: ["react", "react-dom/client", "moment", "lodash", "dot-prop", "axios"],
       },
       output: {
-        path: slash(path.resolve(assetsDirectoryPath, "./dll/")),
+        path: path.resolve(assetsDirectoryPath, "./dll/"),
         filename: "hydrate.dll.js",
         library: "hydrateDLLVendor"
       },
@@ -57,7 +56,7 @@ export class DLLConfigManager {
         }),
         new DllPlugin({
           // 清单文件描述文件
-          path: slash(path.resolve(assetsDirectoryPath, "./dll/hydrate.dll.json")),
+          path: path.resolve(assetsDirectoryPath, "./dll/hydrate.dll.json"),
           // 必须与 output.library 保持一致
           name: "hydrateDLLVendor"
         })
