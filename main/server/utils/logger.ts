@@ -1,4 +1,5 @@
 import path from "path";
+import slash from "slash";
 import moment from "moment";
 import DailyRotateFile from "winston-daily-rotate-file";
 import { createLogger, format, transports } from "winston";
@@ -23,7 +24,7 @@ export const logger = createLogger({
       frequency: "1d",
       level: "error",
       extension: ".log",
-      dirname: path.resolve(__dirname, "./logs/"),
+      dirname: slash(path.resolve(__dirname, "./logs/")),
       datePattern: "YYYY-MM-DD-HH-mm-ss",
       filename: "logger",
       maxSize: "10m",
